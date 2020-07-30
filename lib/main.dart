@@ -141,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dueling Retards",
+          "Lifepoint Counter",
           style: TextStyle(color: Colors.white),
         ),
         // actions: <Widget>[Icon(Icons.menu)],

@@ -31,34 +31,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int player1 = 8000, player2 = 8000;
   bool selected = true; // true == player1, false == player2
-  //bool add = false; // true == addition, false == subtraction
   int operation = 0; // 0 == no operation, 1 == addition, 2 == subtraction
   bool willEnd = false; // will this attack finish the duel?
   Color currentColor = Colors.orange;
   TextEditingController controller = new TextEditingController();
   String numberToChange = "";
-
-  /*void _calculate() {
-    if (controller.text.length != 0) {
-      int number = int.parse(controller.text);
-      setState(() {
-        if (selected) {
-          if (add) {
-            player1 += number;
-          } else {
-            player1 -= number;
-          }
-        } else {
-          if (add) {
-            player2 += number;
-          } else {
-            player2 -= number;
-          }
-        }
-      });
-      controller.text = "";
-    }
-  }*/
 
   void _calculate() {
     if (controller.text.length != 0) {
@@ -83,29 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  /*void _backspace() {
-    setState(() {
-      if (controller.text.length != 0) {
-        controller.text =
-            controller.text.substring(0, controller.text.length - 1);
-        if (!add) {
-          if (selected) {
-            if ((player1 - int.parse(controller.text)) <= 0) {
-              willEnd = true;
-            } else {
-              willEnd = false;
-            }
-          } else {
-            if ((player2 - int.parse(controller.text)) <= 0) {
-              willEnd = true;
-            } else {
-              willEnd = false;
-            }
-          }
-        }
-      }
-    });
-  }*/
   void _backspace() {
     setState(() {
       if (controller.text.length != 0) {
@@ -296,19 +250,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       operation = 0;
                     });
                   }),
-                  /*_operationButton(
-                      Text('+',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                              color: Colors.black)), () {
-                    if (operation == 1) {
-                      operation = 0;
-                    } else {
-                      operation = 1;
-                      willEnd = false;
-                    }
-                  }),*/
                   InkResponse(
                     onTap: () {
                       setState(() {
@@ -373,31 +314,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-                  /*_operationButton(
-                      Text('-',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                              color: Colors.black)), () {
-                    if (operation == 2) {
-                      operation = 0;
-                    } else {
-                      operation = 2;
-                      if (selected) {
-                        if ((player1 - int.parse(controller.text)) <= 0) {
-                          willEnd = true;
-                        } else {
-                          willEnd = false;
-                        }
-                      } else {
-                        if ((player2 - int.parse(controller.text)) <= 0) {
-                          willEnd = true;
-                        } else {
-                          willEnd = false;
-                        }
-                      }
-                    }
-                  }),*/
                   _operationButton(
                       Icon(Icons.backspace, color: currentColor), _backspace),
                   _numberButton(7),

@@ -1,5 +1,7 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -36,6 +38,92 @@ class _MyHomePageState extends State<MyHomePage> {
   Color currentColor = Colors.orange;
   TextEditingController controller = new TextEditingController();
   String numberToChange = "";
+
+  Future<bool> _resetAlert() {
+    return Alert(
+      context: context,
+      type: AlertType.warning,
+      title: "Reset",
+      desc: "Would you like to reset the game?",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "CANCEL",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          color: Colors.grey,
+        ),
+        DialogButton(
+          child: Text(
+            "RESET",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () {
+            player1 = 8000;
+            player2 = 8000;
+            operation = 0;
+            selected = true;
+            Navigator.pop(context);
+          },
+          color: Colors.orange,
+        )
+      ],
+    ).show();
+  }
+
+  Future<bool> _diceRoll() {
+    print("dice roll pressed");
+    final _random = new Random();
+    final _random2 = new Random();
+    int number = 1 + _random.nextInt(7 - 1);
+    int number2 = 1 + _random2.nextInt(7 - 1);
+    print("number: $number");
+    print("number2: $number2");
+    return Alert(
+      context: context,
+      title: "Dice Roll",
+      desc: "$number\n$number2",
+      buttons: [
+        DialogButton(
+          child: Text(
+            "CLOSE",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          color: Colors.orange,
+        ),
+      ],
+    ).show();
+  }
+
+  Future<bool> _coinFlip() {
+    print("coin flip pressed");
+    String coinSide = "Heads";
+    final _random = new Random();
+    int number = 0 + _random.nextInt(2 - 0);
+    if (number == 0) {
+      coinSide = "Heads";
+    } else {
+      coinSide = "Tails";
+    }
+    print("number: $number");
+    return Alert(
+      context: context,
+      title: "Coin Flip",
+      desc: coinSide,
+      buttons: [
+        DialogButton(
+          child: Text(
+            "CLOSE",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => Navigator.pop(context),
+          color: Colors.orange,
+        ),
+      ],
+    ).show();
+  }
 
   void _calculate() {
     if (controller.text.length != 0) {
@@ -141,10 +229,33 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Lifepoint Counter",
+          "",
           style: TextStyle(color: Colors.white),
         ),
-        // actions: <Widget>[Icon(Icons.menu)],
+        actions: <Widget>[
+          InkWell(
+            onTap: () => _resetAlert(),
+            child: Container(
+              margin: EdgeInsets.all(15),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Text(
+                      "Reset",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+                  Container(
+                      child: Icon(
+                    Icons.restore,
+                    color: Colors.white,
+                  )),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Column(
@@ -214,8 +325,32 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                InkResponse(
+                  child: Container(
+                    height: height / 8,
+                    width: width / 8,
+                    margin: EdgeInsets.all(15),
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: Center(child: Image.asset('assets/dice.png')),
+                  ),
+                  onTap: () => _diceRoll(),
+                ),
+                InkResponse(
+                  child: Container(
+                    height: height / 8,
+                    width: width / 8,
+                    margin: EdgeInsets.all(15),
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: Center(child: Image.asset('assets/flip.png')),
+                  ),
+                  onTap: () => _coinFlip(),
+                ),
+              ],
+            ),
             Expanded(
-              flex: 3,
               child: Align(
                 alignment: Alignment.bottomRight,
                 child: TextFormField(
@@ -233,7 +368,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Expanded(
-              flex: 5,
+              flex: 6,
               child: GridView.count(
                 crossAxisSpacing: 20,
                 crossAxisCount: 4,
